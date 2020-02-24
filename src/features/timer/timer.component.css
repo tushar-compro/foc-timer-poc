@@ -1,0 +1,43 @@
+@import "~font-awesome/css/font-awesome.min.css";
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
+.timer-screen{
+    display: flex;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.timer-screen .time-anim-container{
+    height: 8px;
+}
+
+.timer-screen.timer-time-up .time-up-curtain{
+    opacity: 0.8;
+}
+
+.timer-screen.timer-time-up .time-up-msg-container{
+    font-size: xx-large;
+    color: #ffffff;
+}
+
+.fa-hourglass-start{
+    font-size: 60px;
+    margin: auto;
+}
+
+.bg-time-display{
+    background-color: #e0e0e0;
+}
+
+.timer-sound-chooser{
+    width: 230px;
+    right: 30px;
+    bottom: 30px;
+}
+
+.timer-sound-chooser .list-group-item{
+    border: none;
+    padding-left: 0;
+    padding-right: 0;
+}
