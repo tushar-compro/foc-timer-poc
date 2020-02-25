@@ -4,13 +4,14 @@
             
             <div #TimerDragHandle class="timer-header bg-success d-flex justify-content-between align-items-center" style="height: 45px;">
                 <span class="btn fa fa-arrows"></span>
-                <span>Timer</span>
+                <h5 class="m-0">Timer</h5>
                 <span class="util-timer-btns btn-group" role="group" >
                     <button *ngIf="selectedScreen==screens.timeUp" class="btn btn-timer-reset fa fa-repeat"
                              (click)="showScreen({screen: screens.typeChooser})" ></button>
-                    <span *ngIf="selectedScreen==screens.typeChooser || selectedScreen==screens.timeSetter" (click)="toggleSoundChooser()">
-                        <button *ngIf="selectedSound" class="btn btn-timer-sound fa fa-bell"></button>
-                        <button *ngIf="!selectedSound" class="btn btn-timer-sound fa fa-bell-slash"></button>
+                    <span *ngIf="selectedScreen==screens.typeChooser || selectedScreen==screens.timeSetter" 
+                        class="bell-icon-container" (click)="toggleSoundChooser()">
+                        <button *ngIf="selectedSound != 0" class="btn btn-timer-sound fa fa-bell"></button>
+                        <button *ngIf="selectedSound == 0" class="btn btn-timer-sound fa fa-bell-slash"></button>
                     </span>
                     <button class="btn btn-timer-close fa fa-remove"></button>
                 </span>
@@ -20,35 +21,42 @@
                 <div *ngIf="(selectedScreen==screens.typeChooser || selectedScreen==screens.timeUp)" 
                         class="timer-type-chooser timer-screen container-fluid ">
                     <span class="fa fa-hourglass-start col-3"></span>
-                    <span class="type-chooser-content m-auto col-9">
-                        <span >Count Type:</span>
-                        <button class="btn d-inline-flex flex-column border" 
-                        (click)="showScreen({screen: screens.timeSetter, timerType:timerTypes.up})">
-                            <span class="fa fa-long-arrow-up"></span>
-                            <span>UP</span>
-                        </button>
-                        <button class="btn d-inline-flex flex-column border" 
-                        (click)="showScreen({screen: screens.timeSetter, timerType:timerTypes.down})">
-                            <span class="fa fa-long-arrow-down"></span>
-                            <span>DOWN</span>
-                        </button>
+                    <span class="type-chooser-content m-auto col-9 d-inline-flex align-items-center pr-0">
+                        <h6 class="d-inline-flex mr-auto">Count Type:</h6>
+                        <span class="btn-container">
+                            <button class="btn type-chooser-btn d-inline-flex flex-column border mr-2 pb-0 pl-3 pr-3" 
+                            (click)="showScreen({screen: screens.timeSetter, timerType:timerTypes.up})">
+                                <span class="fa fa-long-arrow-up m-auto"></span>
+                                <span class="type-chooser-btn-text">UP</span>
+                            </button>
+                            <button class="btn type-chooser-btn d-inline-flex flex-column border pb-0" 
+                            (click)="showScreen({screen: screens.timeSetter, timerType:timerTypes.down})">
+                                <span class="fa fa-long-arrow-down m-auto"></span>
+                                <span class="type-chooser-btn-text">DOWN</span>
+                            </button>
+                        </span>
+                        
                     </span>
                 </div>
                 
                 <div *ngIf="selectedScreen==screens.timeSetter" 
                     class="timer-time-setter timer-screen container-fluid flex-row align-items-center">
                     <span class="fa fa-hourglass-start col-3"></span>
-                    <div class="d-inline-flex flex-column col-9 p-0">
+                    <div class="d-inline-flex flex-column col-9 pr-0">
                         <div class="time-setter d-flex">
-                            <h5 class="d-inline-flex mt-auto mb-auto">Total Time:</h5>
-                            <span class="min-setter d-inline-flex flex-column">
-                                <button (click)="updateOrgTime({type:'min', action:'inc'})">+</button>
-                                <button (click)="updateOrgTime({type:'min', action:'dec'})">-</button>
-                            </span>
-                            <h5 class="time-display bg-time-display d-inline-flex col-5 mt-auto mb-auto justify-content-center">{{timeSetterOrgVal.min + ":" + timeSetterOrgVal.sec}}</h5>
-                            <span class="sec-setter d-inline-flex flex-column">
-                                <button (click)="updateOrgTime({type:'sec', action:'inc'})">+</button>
-                                <button (click)="updateOrgTime({type:'sec', action:'dec'})">-</button>
+                            <h5 class="d-inline-flex mt-auto mb-auto mr-2">Total Time:</h5>
+                            <span class="d-inline-flex  flex-grow-1 bg-time-display">
+                                <span class="min-setter d-inline-flex flex-column">
+                                    <button (click)="updateOrgTime({type:'min', action:'inc'})">+</button>
+                                    <button (click)="updateOrgTime({type:'min', action:'dec'})">-</button>
+                                </span>
+                                <span class="time-display d-inline-flex col-5 align-items-center justify-content-center h-100 m-auto">
+                                    <h5>{{timeSetterOrgVal.min + ":" + timeSetterOrgVal.sec}}</h5>
+                                </span>
+                                <span class="sec-setter d-inline-flex flex-column">
+                                    <button (click)="updateOrgTime({type:'sec', action:'inc'})">+</button>
+                                    <button (click)="updateOrgTime({type:'sec', action:'dec'})">-</button>
+                                </span>
                             </span>
                         </div>
                         <div class="btn-container mt-3 d-flex">
@@ -71,8 +79,8 @@
                         <span >{{timeSetterCurrVal.min + ":" + timeSetterCurrVal.sec}}</span>
                       </h3>
                       <div class="btn-container mt-2 mb-2 d-flex">
-                        <button class="btn btn-primary mr-3 flex-grow-1" (click)="stopTimer(true)">STOP</button>
-                        <button class="btn btn-primary flex-grow-1" (click)="pauseTimer()">PAUSE</button>
+                        <button class="btn btn-primary flex-grow-1" (click)="stopTimer(true)">STOP</button>
+                        <!--<button class="btn btn-primary flex-grow-1" (click)="pauseTimer()">PAUSE</button>-->
                     </div>
                     </span>
                 </div>
@@ -88,17 +96,17 @@
             
         </div>
 
-        <div *ngIf=soundChooseinView class="container timer-sound-chooser position-absolute bg-light shadow p-3">
-            <h4 class="d-flex">
+        <div *ngIf=soundChooseinView class="container timer-sound-chooser position-absolute bg-light shadow p-0">
+            <h5 class="sound-choose-header d-flex bg-success">
                 <span class="fa fa-clock-o d-inline-flex align-items-center"></span>
-                <span class="pl-2 mr-auto">Alarm Sound</span> 
-                <button class="fa fa-remove border-0 bg-light p-0" (click)="toggleSoundChooser()"></button> 
-            </h4>
-            <ul class="list-group">
+                <span class="pl-3 mr-auto">Alarm Sound</span> 
+                <button class="fa fa-remove border-0 p-0 bg-success" (click)="toggleSoundChooser()"></button> 
+            </h5>
+            <ul class="list-group pl-3 pr-3 pb-3">
                 
                 <li *ngFor="let sound of sounds; let i = index" [attr.data-index]="i" class="list-group-item bg-light d-flex ">
                     <span class="mr-auto">{{sound.name}}</span>
-                    <input type="radio" name="sound" (change)="onSoundChange($event)" value={{i}} aria-label="radio for following text input">
+                    <input type="radio" name="sound" [checked]="i==selectedSound" (change)="onSoundChange($event)" value={{i}} aria-label="radio for following text input">
                 </li>
             
             </ul>

@@ -57,6 +57,8 @@ export class TimerComponent implements OnInit {
 
   selectedSound = 0;
 
+  timePauseState = false;
+
   constructor() {
 
     this.selectedScreen = this.screens.typeChooser;
@@ -68,7 +70,6 @@ export class TimerComponent implements OnInit {
 
   showScreen(e){
 
-    console.log("e: ", e);
     this.selectedScreen = e.screen;
 
     switch(e.screen){
@@ -109,7 +110,15 @@ export class TimerComponent implements OnInit {
       if(min==0 && sec < this.minSetableTime){
         sec = this.minSetableTime;
       }else if(sec < 0){
-          sec = 0;
+          if(min > 0){
+            sec = 59;
+            min -= 1;
+          }else{
+            sec = 0;
+          }
+      }else if(sec > 59){
+        min += 1;
+        sec = 0;
       }
       
     }else if(e.type == 'min' ){
@@ -136,7 +145,10 @@ export class TimerComponent implements OnInit {
   }
 
   startTimer(){
-    /*this.showScreen({screen: this.screens.timeRunner});*/
+    this.toggleSoundChooser(false);
+    
+    this.elapsedTimeProportion = 0;
+    
     if(this.selectedTimerType == this.timerTypes.up){
       this.timeSetterCurrVal = {
         min: '00',
@@ -154,6 +166,8 @@ export class TimerComponent implements OnInit {
   }
 
   operateDownTimer(){
+
+    this.timeSetterCurrVal = JSON.parse(JSON.stringify(this.timeSetterOrgVal));
     
     this.timerId = setInterval(()=>{
       
@@ -222,8 +236,9 @@ export class TimerComponent implements OnInit {
     }
   }
 
-  pauseTimer(){
+  pauseTimer(state){
     clearInterval(this.timerId);
+    this.timePauseState = true;
   }
 
   playAudio(){
@@ -239,8 +254,12 @@ export class TimerComponent implements OnInit {
     this.selectedSound = e.target.value;
   }
 
-  toggleSoundChooser(){
-    this.soundChooseinView = !this.soundChooseinView;
+  toggleSoundChooser(state?){
+    if(state == undefined){
+      this.soundChooseinView = !this.soundChooseinView;
+    }else{
+      this.soundChooseinView = state;
+    }
   }
 
 }

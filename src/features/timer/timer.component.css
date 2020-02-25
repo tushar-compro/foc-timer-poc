@@ -1,6 +1,20 @@
 @import "~font-awesome/css/font-awesome.min.css";
 @import "~bootstrap/dist/css/bootstrap.min.css";
 
+.bell-icon-container{
+    display: inline-flex;
+    width: 45px;
+}
+
+.fa-long-arrow-up,
+.fa-long-arrow-down{
+    font-size: 2rem;
+}
+
+.type-chooser-btn-text{
+    font-size: 0.75rem;
+}
+
 .timer-screen{
     display: flex;
     position: absolute;
@@ -34,6 +48,10 @@
     width: 230px;
     right: 30px;
     bottom: 30px;
+}
+
+.timer-sound-chooser .sound-choose-header{
+    padding: 10px 16px;
 }
 
 .timer-sound-chooser .list-group-item{
