@@ -56,6 +56,7 @@ export class TimerComponent implements OnInit {
   ]
 
   selectedSound = 0;
+  timeUpAudio;
 
   timePauseState = false;
 
@@ -63,13 +64,26 @@ export class TimerComponent implements OnInit {
 
     this.selectedScreen = this.screens.typeChooser;
     this.timeSetterOrgVal = JSON.parse(JSON.stringify(this.timeSetterInitVal));
-    
+
+    // preloading the audios
+    for(let i=0; i<this.sounds.length; i++){
+      let sound = this.sounds[i];
+      let path = sound['path'];
+      if(path){
+        let audio = sound['audio'] = new Audio();
+        audio.src = path;
+        audio.load();
+      }
+    }
    }
 
   ngOnInit() { }
 
   showScreen(e){
 
+    // stop the audio if in play
+    this.playAudio(false);
+    // switch screen to the selected one
     this.selectedScreen = e.screen;
 
     switch(e.screen){
@@ -241,17 +255,21 @@ export class TimerComponent implements OnInit {
     this.timePauseState = true;
   }
 
-  playAudio(){
-    if(this.selectedSound){
-      let audio = new Audio();
-      audio.src = this.sounds[this.selectedSound]['path'];
+  playAudio(state?){
+    
+    // stop the already playing audio before playing another one
+    this.timeUpAudio && this.timeUpAudio.pause && this.timeUpAudio.pause();
+    
+    if(state != false && this.selectedSound){
+      let audio = this.timeUpAudio = this.sounds[this.selectedSound]['audio'];
       audio.load();
-      audio.play();
+      audio && audio.play && audio.play();
     }
   }
 
-  onSoundChange(e){
-    this.selectedSound = e.target.value;
+onSoundChange(e){
+    this.selectedSound = parseInt(e.target.value);
+    this.playAudio();
   }
 
   toggleSoundChooser(state?){
