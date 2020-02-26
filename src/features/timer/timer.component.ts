@@ -273,6 +273,7 @@ onSoundChange(e){
   }
 
   toggleSoundChooser(state?){
+    this.playAudio(false);
     if(state == undefined){
       this.soundChooseinView = !this.soundChooseinView;
     }else{
